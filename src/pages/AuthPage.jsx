@@ -89,7 +89,6 @@ export default function AuthPage() {
         return res.json();
       })
       .then(resData => {
-        console.log('resData :>> ', resData);
         if (resData?.data?.login?.token) {
           context.login(
             resData?.data?.login?.token,

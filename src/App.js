@@ -36,7 +36,7 @@ export default function App() {
         <NavBar />
         <Suspense
           fallback={
-            <Loader className="Loader" type="Puff" color="#6667AB" height={100} width={100} />
+            <Loader className="Loader" type="Puff" color="#69b00b" height={100} width={100} />
           }
         >
           <main className="main-content">
