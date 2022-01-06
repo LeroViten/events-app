@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { toast } from 'react-hot-toast';
+import AuthContext from '../context/auth-context';
 import './AuthPage.scss';
 
 /* eslint-disable no-useless-escape */
@@ -8,6 +9,7 @@ import './AuthPage.scss';
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
+  const context = useContext(AuthContext);
 
   const submitHandler = event => {
     event.preventDefault();
@@ -88,6 +90,13 @@ export default function AuthPage() {
       })
       .then(resData => {
         console.log('resData :>> ', resData);
+        if (resData?.data?.login?.token) {
+          context.login(
+            resData?.data?.login?.token,
+            resData?.data?.login?.userId,
+            resData?.data?.login?.tokenExpiration,
+          );
+        }
       }).catch((error) => {
     console.log(error);
       });
