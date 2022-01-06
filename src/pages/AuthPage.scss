@@ -19,7 +19,8 @@
   display: block;
 }
 
-.form-actions button {
+.form-actions button,
+.btn {
   background: $veri-peri;
   font: inherit;
   border: 1px solid #753aa5;
@@ -33,10 +34,5 @@
   &:hover {
     transform: scale(0.95);
     background-color: #8d5db4;
-  }
-
-  &:active {
-    background: #8d5db4;
-    border-color: #753aa5;
   }
 }

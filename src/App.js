@@ -41,12 +41,12 @@ export default function App() {
         >
           <main className="main-content">
             <Switch>
-              {!token && <Redirect from="/" to={'/auth'} exact />}
               {token && <Redirect from="/" to={'/events'} exact />}
               {token && <Redirect from="/auth" to={'/events'} exact />}
               {!token && <Route exact path="/auth" component={AuthPage} />}
               <Route exact path="/events" component={EventsPage} />
               {token && <Route exact path="/bookings" component={BookingsPage} />}
+              {!token && <Redirect to={'/auth'} exact />}
               <Route component={NotFoundPage} />
             </Switch>
           </main>
