@@ -1,0 +1,42 @@
+@import '../styles/shared.scss';
+
+.auth-form {
+  width: 25rem;
+  max-width: 80%;
+  margin: 5rem auto;
+}
+
+.form-control {
+  margin-bottom: 1rem;
+
+  & label {
+    margin-bottom: 0.5rem;
+  }
+}
+.form-control label,
+.form-control input {
+  width: 100%;
+  display: block;
+}
+
+.form-actions button {
+  background: $veri-peri;
+  font: inherit;
+  border: 1px solid #753aa5;
+  border-radius: 3px;
+  padding: 0.25rem 1rem;
+  margin-right: 1rem;
+  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.26);
+  color: white;
+  transition: all $transition-duration $transition-function;
+
+  &:hover {
+    transform: scale(0.95);
+    background-color: #8d5db4;
+  }
+
+  &:active {
+    background: #8d5db4;
+    border-color: #753aa5;
+  }
+}
