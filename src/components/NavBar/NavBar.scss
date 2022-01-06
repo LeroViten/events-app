@@ -1,0 +1,57 @@
+@import '../../styles/shared.scss';
+
+// styles:
+
+.main-content {
+  margin: 4rem 2.5rem;
+}
+
+.main-navigation {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 3.5rem;
+  background: $veri-peri;
+  padding: 0 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.main-navigation__logo h1 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.main-navigation__items {
+  margin-left: 1.5rem;
+}
+
+.main-navigation__items ul {
+  display: flex;
+}
+
+.main-navigation__items li {
+  margin: 0 1rem;
+  transition: all $transition-duration $transition-function;
+
+  &:hover {
+    transform: scale(0.95);
+  }
+}
+
+.main-navigation__items a {
+  color: #000;
+  text-decoration: none;
+  font-weight: 500;
+  font-size: medium;
+  transition: all $transition-duration $transition-function;
+
+  &:hover {
+    color: #bbc52f;
+  }
+}
+.main-navigation__items a:active,
+.main-navigation__items a.active {
+  color: #adb00b;
+}
