@@ -2,7 +2,9 @@ import React, { useState, useContext, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import AuthContext from '../context/auth-context';
 import Modal from '../components/Modal/Modal';
+import Spinner from '../components/Spinner';
 import Backdrop from '../components/Backdrop/Backdrop';
+import EventList from '../components/Events/EventList/EventList';
 import './EventsPage.scss';
 
 const eventState = {
@@ -14,6 +16,8 @@ const eventState = {
 
 export default function EventsPage() {
   const [creatingEvent, setCreatingEvent] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [values, setValues] = useState(eventState);
   const [events, setEvents] = useState([]);
 
@@ -34,6 +38,7 @@ export default function EventsPage() {
 
   const modalConfirmHandler = () => {
     setCreatingEvent(false);
+    setLoading(true);
     const { title, price, date, description } = values;
     if (
       title.trim().length === 0 ||
@@ -41,7 +46,7 @@ export default function EventsPage() {
       date.trim().length === 0 ||
       description.trim().length === 0
     ) {
-      toast.error('All fields are required!', {
+      toast.error('All the fields are required!', {
         duration: 3000,
         icon: '🤷‍♂️',
         style: {
@@ -52,8 +57,6 @@ export default function EventsPage() {
       return;
     }
 
-    // const newEvent = { title, price, date, description };
-
     const bodyData = {
       query: `
           mutation{
@@ -63,10 +66,6 @@ export default function EventsPage() {
               description
               date
               price
-              creator {
-                _id
-                email
-              }
             }
           }
         `,
@@ -95,24 +94,38 @@ export default function EventsPage() {
         return res.json();
       })
       .then(resData => {
-        console.log('resData :>> ', resData);
-        fetchEvents();
+        const newEvent = {
+          _id: resData.data.createEvent._id,
+          title: resData.data.createEvent.title,
+          description: resData.data.createEvent.description,
+          date: resData.data.createEvent.date,
+          price: resData.data.createEvent.price,
+          creator: {
+            _id: context.userId,
+          },
+        };
+        setEvents(prev => [newEvent, ...prev]);
+        setLoading(false);
       })
       .catch(error => {
         console.log(error);
+        setLoading(false);
       });
     setValues(eventState);
   };
 
   const modalCancelHandler = () => {
     setCreatingEvent(false);
+    setSelectedEvent(null);
   };
 
   const backdropClickHandler = () => {
     setCreatingEvent(false);
+    setSelectedEvent(null);
   };
 
   const fetchEvents = () => {
+    setLoading(true);
     const requestBody = {
       query: `
           query {
@@ -122,6 +135,10 @@ export default function EventsPage() {
               description
               date
               price
+              creator {
+                _id
+                email
+              }
             }
           }
         `,
@@ -151,17 +168,37 @@ export default function EventsPage() {
       .then(resData => {
         const events = resData.data.events;
         setEvents(events);
+        setLoading(false);
       })
       .catch(error => {
         console.log(error);
+        setLoading(false);
       });
   };
+
+  const showDetailHandler = eventId => {
+    const exactEvent = events.find(event => event._id === eventId);
+    setSelectedEvent(exactEvent);
+  };
+
+  const onBookEvent = () => {
+    console.log('shit by now :>> ');
+  };
+
+  const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
 
   return (
     <>
       {creatingEvent && <Backdrop onToggle={backdropClickHandler} />}
       {creatingEvent && (
-        <Modal title="Add Event" canCancel={modalCancelHandler} canConfirm={modalConfirmHandler}>
+        <Modal
+          title="Add Event"
+          canCancel
+          canConfirm
+          onCancel={modalCancelHandler}
+          onConfirm={modalConfirmHandler}
+          confirmText="Confirm"
+        >
           <form>
             <div className="form-control">
               <label htmlFor="title">Title</label>
@@ -206,6 +243,25 @@ export default function EventsPage() {
           </form>
         </Modal>
       )}
+
+      {selectedEvent && <Backdrop onToggle={backdropClickHandler} />}
+      {selectedEvent && (
+        <Modal
+          title={selectedEvent?.title}
+          canCancel
+          canConfirm
+          onCancel={modalCancelHandler}
+          onConfirm={onBookEvent}
+          confirmText="Book"
+        >
+          <div className="wrapper">
+            <b>Description: {selectedEvent?.description}</b>
+            <p style={{ color: '#505050', marginBottom: '5px' }}> Price: ${selectedEvent?.price}</p>
+            <p>Date: {new Date(selectedEvent?.date).toLocaleDateString('en-US', dateOptions)}</p>
+          </div>
+        </Modal>
+      )}
+
       {context.token && (
         <div className="eventsContainer">
           <p>Create your own Event!</p>
@@ -214,16 +270,8 @@ export default function EventsPage() {
           </button>
         </div>
       )}
-      <ul className="events__list">
-        {events.map(({ _id, title, description, price, date }) => (
-          <li key={_id} className="events__list--item">
-            <h4>{title}</h4>
-            <p>{price}</p>
-            <p>{date}</p>
-            <p>{description}</p>
-          </li>
-        ))}
-      </ul>
+      {loading && <Spinner />}
+      <EventList events={events} onShowDetail={showDetailHandler} />
     </>
   );
 }

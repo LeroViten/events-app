@@ -6,6 +6,12 @@
   margin: 5rem auto;
 }
 
+.auth-form__wrapper {
+  padding: 15px;
+  border: 2px solid $veri-peri;
+  border-radius: 4px;
+}
+
 .form-control {
   margin-bottom: 1rem;
 
@@ -20,6 +26,11 @@
   display: block;
 }
 
+.form-actions {
+  display: flex;
+  justify-content: center;
+}
+
 .form-actions button,
 .btn {
   background: $veri-peri;
@@ -32,7 +43,8 @@
   color: white;
   transition: all $transition-duration $transition-function;
 
-  &:hover {
+  &:hover,
+  &:focus-visible {
     transform: scale(0.95);
     background-color: #8d5db4;
   }

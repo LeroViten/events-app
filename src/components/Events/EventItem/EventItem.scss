@@ -1,0 +1,34 @@
+@import '../../../styles/shared.scss';
+
+.events__list--item {
+  margin: 1rem 0;
+  padding: 1rem;
+  border: 1px solid $veri-peri;
+  border-radius: 4px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all $transition-duration $transition-function;
+
+  &:hover,
+  &:focus-visible {
+    transform: scale(1.02);
+    box-shadow: $shadow;
+  }
+}
+
+.events__list--item h2 {
+  margin: 0;
+  font-size: 1.5rem;
+  color: $veri-peri;
+}
+
+.events__list--item h3 {
+  margin: 0;
+  font-size: 1rem;
+  color: #7c7c7c;
+}
+
+.events__list--item p {
+  margin: 0;
+}

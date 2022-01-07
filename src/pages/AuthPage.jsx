@@ -104,21 +104,25 @@ export default function AuthPage() {
 
   return (
     <form className="auth-form" autoComplete="off" onSubmit={submitHandler}>
-      <div className="form-control">
-        <label>
-          E-mail:
-          <input type="email" name="email" />
-        </label>
-      </div>
-      <div className="form-control">
-        <label>
-          Password:
-          <input type="password" name="password" />
-        </label>
-      </div>
-      <div className="form-actions">
-        <button type="submit">Submit</button>
-        <button type="button" onClick={() => setIsLogin(!isLogin)}>Go to {isLogin?'Register':'Login'}</button>
+      <div className="auth-form__wrapper">
+        <div className="form-control">
+          <label>
+            E-mail:
+            <input type="email" name="email" />
+          </label>
+        </div>
+        <div className="form-control">
+          <label>
+            Password:
+            <input type="password" name="password" />
+          </label>
+        </div>
+        <div className="form-actions">
+          <button type="submit">Submit</button>
+          <button type="button" onClick={() => setIsLogin(!isLogin)}>
+            {isLogin ? 'Register' : 'Login'}
+          </button>
+        </div>
       </div>
     </form>
   );

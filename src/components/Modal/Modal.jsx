@@ -1,7 +1,15 @@
 import React from 'react';
 import './Modal.scss';
 
-export default function Modal({ children, title, canCancel, canConfirm }) {
+export default function Modal({
+  children,
+  title,
+  canCancel,
+  canConfirm,
+  onCancel,
+  onConfirm,
+  confirmText,
+}) {
   return (
     <div className="modal">
       <header className="modal__header">
@@ -10,12 +18,12 @@ export default function Modal({ children, title, canCancel, canConfirm }) {
       <section className="modal__content">{children}</section>
       <section className="modal__actions">
         {canConfirm && (
-          <button className="btn" onClick={canConfirm}>
-            Confirm
+          <button className="btn" onClick={onConfirm}>
+            {confirmText}
           </button>
         )}
         {canCancel && (
-          <button className="btn" onClick={canCancel}>
+          <button className="btn" onClick={onCancel}>
             Cancel
           </button>
         )}
