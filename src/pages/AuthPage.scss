@@ -16,7 +16,18 @@
   margin-bottom: 1rem;
 
   & label {
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  & input {
+    height: 25px;
+    background-color: #ececec99;
+    border: 2px dotted $veri-peri;
+    border-radius: 4px;
+
+    &:focus-visible {
+      outline: none;
+    }
   }
 }
 .form-control label,

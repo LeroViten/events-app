@@ -4,13 +4,15 @@ import './EventItem.scss';
 
 export default function EventItem({ event, onDetailPress }) {
   const context = useContext(AuthContext);
+  const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+
   return (
     <>
       <li className="events__list--item">
         <div>
           <h2>{event.title}</h2>
           <h3>
-            ${event.price} - {new Date(event.date).toLocaleDateString()}
+            ${event.price} - {new Date(event.date).toLocaleDateString('en-US', dateOptions)}
           </h3>
         </div>
         <div>

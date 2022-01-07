@@ -235,7 +235,6 @@ export default function EventsPage() {
         return res.json();
       })
       .then(resData => {
-        console.log(resData);
         setSelectedEvent(null);
         setLoading(false);
       })
