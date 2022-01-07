@@ -66,8 +66,8 @@ export default function EventsPage() {
 
     const bodyData = {
       query: `
-          mutation{
-            createEvent(eventInput:{title:"${title}", price: "${price}", date:"${date}", description: "${description}"}) {
+          mutation CreateEvent($title: String!, $price: String!, $date: String!, $description: String!) {
+            createEvent(eventInput:{title: $title, price: $price, date: $date, description: $description}) {
               _id
               title
               description
@@ -76,6 +76,12 @@ export default function EventsPage() {
             }
           }
         `,
+      variables: {
+        title: title,
+        price: price,
+        date: date,
+        description: description,
+      },
     };
 
     fetch('http://localhost:3001/graphql', {
@@ -102,13 +108,13 @@ export default function EventsPage() {
       })
       .then(resData => {
         const newEvent = {
-          _id: resData.data.createEvent._id,
-          title: resData.data.createEvent.title,
-          description: resData.data.createEvent.description,
-          date: resData.data.createEvent.date,
-          price: resData.data.createEvent.price,
+          _id: resData?.data?.createEvent?._id,
+          title: resData?.data?.createEvent?.title,
+          description: resData?.data?.createEvent?.description,
+          date: resData?.data?.createEvent?.date,
+          price: resData?.data?.createEvent?.price,
           creator: {
-            _id: context.userId,
+            _id: context?.userId,
           },
         };
         setEvents(prev => [newEvent, ...prev]);
@@ -202,14 +208,17 @@ export default function EventsPage() {
 
     const requestBody = {
       query: `
-          mutation {
-            bookEvent(eventId: "${selectedEvent._id}") {
+          mutation BookEvent($id: ID!) {
+            bookEvent(eventId: $id) {
               _id
              createdAt
              updatedAt
             }
           }
         `,
+      variables: {
+        id: selectedEvent?._id,
+      },
     };
 
     fetch('http://localhost:3001/graphql', {
@@ -217,7 +226,7 @@ export default function EventsPage() {
       body: JSON.stringify(requestBody),
       headers: {
         'Content-Type': 'application/json',
-        Authorization: 'Bearer ' + context.token,
+        Authorization: 'Bearer ' + context?.token,
       },
     })
       .then(res => {
@@ -324,7 +333,7 @@ export default function EventsPage() {
       {context.token && (
         <div className="eventsContainer">
           <p>Create your own Event!</p>
-          <button className="btn" onClick={startCreateEvent}>
+          <button className="btn" onClick={startCreateEvent} disabled={!context.token}>
             Create Event
           </button>
         </div>

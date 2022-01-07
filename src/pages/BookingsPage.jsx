@@ -79,13 +79,16 @@ export default function BookingsPage() {
     setIsLoading(true);
     const requestBody = {
       query: `
-          mutation {
-            cancelBooking(bookingId: "${bookingId}") {
+          mutation CancelBooking($id: ID!) {
+            cancelBooking(bookingId: $id) {
             _id
              title
             }
           }
         `,
+      variables: {
+        id: bookingId,
+      },
     };
 
     fetch('http://localhost:3001/graphql', {

@@ -30,6 +30,13 @@
   display: flex;
   justify-content: flex-end;
   padding: 1rem;
+
+  & .btn:disabled {
+    cursor: not-allowed;
+    background-color: #ccc;
+    color: red;
+    border: 2px dotted red;
+  }
 }
 
 @media (min-width: 768px) {

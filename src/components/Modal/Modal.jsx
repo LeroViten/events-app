@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import AuthContext from '../../context/auth-context';
 import './Modal.scss';
 
 export default function Modal({
@@ -10,6 +11,7 @@ export default function Modal({
   onConfirm,
   confirmText,
 }) {
+  const context = useContext(AuthContext);
   return (
     <div className="modal">
       <header className="modal__header">
@@ -18,8 +20,8 @@ export default function Modal({
       <section className="modal__content">{children}</section>
       <section className="modal__actions">
         {canConfirm && (
-          <button className="btn" onClick={onConfirm}>
-            {confirmText}
+          <button className="btn" onClick={onConfirm} disabled={!context.token}>
+            {!context.token ? 'Login first' : confirmText}
           </button>
         )}
         {canCancel && (
