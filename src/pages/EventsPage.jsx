@@ -182,7 +182,56 @@ export default function EventsPage() {
   };
 
   const onBookEvent = () => {
-    console.log('shit by now :>> ');
+    if (!context.token) {
+      setSelectedEvent(null);
+      return;
+    }
+
+    setLoading(true);
+
+    const requestBody = {
+      query: `
+          mutation {
+            bookEvent(eventId: "${selectedEvent._id}") {
+              _id
+             createdAt
+             updatedAt
+            }
+          }
+        `,
+    };
+
+    fetch('http://localhost:3001/graphql', {
+      method: 'POST',
+      body: JSON.stringify(requestBody),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + context.token,
+      },
+    })
+      .then(res => {
+        if (res.status !== 200 && res.status !== 201) {
+          toast.error('Booking failed!', {
+            duration: 3000,
+            icon: '😒',
+            style: {
+              border: '1px solid tomato',
+              color: '#b00b69',
+            },
+          });
+          throw new Error('Failed to book the event!');
+        }
+        return res.json();
+      })
+      .then(resData => {
+        console.log(resData);
+        setSelectedEvent(null);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.log(error);
+        setLoading(false);
+      });
   };
 
   const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
