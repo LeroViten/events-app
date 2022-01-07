@@ -12,7 +12,6 @@ export default function EventItem({ event, onDetailPress }) {
           <h3>
             ${event.price} - {new Date(event.date).toLocaleDateString()}
           </h3>
-          {/* <p>{event.description}</p> */}
         </div>
         <div>
           {context.userId === event.creator._id ? (
@@ -20,7 +19,7 @@ export default function EventItem({ event, onDetailPress }) {
           ) : (
             <button className="btn" onClick={() => onDetailPress(event._id)}>
               View Details
-            </button> // event._id
+            </button>
           )}
         </div>
       </li>
