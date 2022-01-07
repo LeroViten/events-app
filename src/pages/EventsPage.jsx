@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext, useEffect, useLayoutEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import AuthContext from '../context/auth-context';
 import Modal from '../components/Modal/Modal';
@@ -18,11 +18,18 @@ export default function EventsPage() {
   const [creatingEvent, setCreatingEvent] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [isActive, setIsActive] = useState(true);
   const [values, setValues] = useState(eventState);
   const [events, setEvents] = useState([]);
 
   useEffect(() => {
     fetchEvents();
+  }, []);
+
+  useLayoutEffect(() => {
+    return () => {
+      setIsActive(false);
+    };
   }, []);
 
   const context = useContext(AuthContext);
@@ -166,13 +173,17 @@ export default function EventsPage() {
         return res.json();
       })
       .then(resData => {
-        const events = resData.data.events;
-        setEvents(events);
-        setLoading(false);
+        if (isActive) {
+          const events = resData.data.events;
+          setEvents(events);
+          setLoading(false);
+        }
       })
       .catch(error => {
         console.log(error);
-        setLoading(false);
+        if (isActive) {
+          setLoading(false);
+        }
       });
   };
 
