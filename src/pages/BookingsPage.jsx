@@ -1,11 +1,14 @@
 import React, { useEffect, useState, useContext, useLayoutEffect } from 'react';
 import { toast } from 'react-hot-toast';
+import ControlButtons from '../components/ControlButtons/ControlButtons';
 import AuthContext from '../context/auth-context';
+import BookingsChart from '../components/BookingsChart/BookingsChart';
 import BookingList from '../components/BookingList/BookingList';
 import Spinner from '../components/Spinner';
 
 export default function BookingsPage() {
   const [bookings, setBookings] = useState(null);
+  const [outputType, setOutputType] = useState('list');
   const [isLoading, setIsLoading] = useState(false);
   const [isActive, setIsActive] = useState(true);
   const context = useContext(AuthContext);
@@ -32,6 +35,7 @@ export default function BookingsPage() {
                _id
                title
                date
+               price
              }
             }
           }
@@ -126,10 +130,23 @@ export default function BookingsPage() {
       });
   };
 
+  const renderOutputHandler = outputType => {
+    if (outputType === 'list') {
+      setOutputType('list');
+    } else {
+      setOutputType('chart');
+    }
+  };
+
   return (
-    <div>
+    <>
       {isLoading && <Spinner />}
-      {bookings && <BookingList bookings={bookings} onCancel={cancelBookingHandler} />}
-    </div>
+      <ControlButtons outputHandler={renderOutputHandler} outputType={outputType} />
+      {bookings && outputType === 'list' ? (
+        <BookingList bookings={bookings} onCancel={cancelBookingHandler} />
+      ) : (
+        <BookingsChart bookings={bookings} />
+      )}
+    </>
   );
 }
