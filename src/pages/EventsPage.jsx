@@ -301,7 +301,7 @@ export default function EventsPage() {
           canConfirm
           onCancel={modalCancelHandler}
           onConfirm={onBookEvent}
-          confirmText="Book"
+          confirmText={context.token ? 'Book' : 'Confirm'}
         >
           <div className="wrapper">
             <b>Description: {selectedEvent?.description}</b>
