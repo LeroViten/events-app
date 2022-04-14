@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { Reorder } from 'framer-motion/dist/framer-motion';
 import AuthContext from '../../../context/auth-context';
 import './EventItem.scss';
 
@@ -8,7 +9,7 @@ export default function EventItem({ event, onDetailPress }) {
 
   return (
     <>
-      <li className="events__list--item">
+      <Reorder.Item key={event.title} value={event} className="events__list--item">
         <div>
           <h2>{event.title}</h2>
           <h3>
@@ -24,7 +25,7 @@ export default function EventItem({ event, onDetailPress }) {
             </button>
           )}
         </div>
-      </li>
+      </Reorder.Item>
     </>
   );
 }
