@@ -339,7 +339,7 @@ export default function EventsPage() {
         </div>
       )}
       {loading && <Spinner />}
-      <EventList events={events} onShowDetail={showDetailHandler} />
+      <EventList events={events} onShowDetail={showDetailHandler} setEvents={setEvents} />
     </>
   );
 }
